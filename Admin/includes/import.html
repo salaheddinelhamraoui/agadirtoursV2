@@ -1,0 +1,106 @@
+<script>
+  document.getElementById("submit_").disabled = true;
+
+var upload_bool= true;
+
+function import_() {
+
+var preview = document.querySelector('img');
+ var file    = document.querySelector('input[type=file]').files[0];
+ var reader  = new FileReader();
+reader.onloadend = function () {
+   preview.src = reader.result;
+ }
+if (file) {
+   reader.readAsDataURL(file);
+ } else {
+   preview.src = "";
+ }
+ 
+ 
+  var x = document.getElementById("myFile");
+  var txt = "";
+  if ('files' in x) {
+  
+  var lenght_ = x.files.length;
+  txt += "<br><strong>" + (lenght_) + ". file</strong><br>";
+  var file = x.files[0];
+		
+		
+        if ('name' in file) {
+			  if(file.name.endsWith(".png") || file.name.endsWith(".jpeg")){
+			  txt += "<p style='color:green;'>" + file.name + "</p>";
+			   upload_bool = true;
+			  }else{
+			   txt += "<p style='color:red;'>* "+file.name+" |Format obligatoire : PNG , JPEG</p>";
+			   upload_bool = false;
+			  }
+		}
+		
+		
+        if ('size' in file ) {
+			 if(parseInt(file.size) <= 30000){
+			  txt += "<p style='color:green;'>Image Size: " + file.size + " bytes </p>";
+			 }else{
+			  txt += "<p style='color:red;'>*Size obligatoire : inférieur à 30 Kbytes <br>Image Size: " + (file.size/1000) + " kbytes </p>";
+			   upload_bool = false;
+			 }
+		}
+	  
+	  } 
+	  else {
+		if (x.value == "") {
+		  txt += "Select one or more files.";
+		} else {
+		  txt += "The files property is not supported by your browser!";
+		  txt  += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead. 
+		}
+		upload_bool = false;
+	  }
+  
+  
+    var al = document.getElementById('alert');
+    al.innerHTML = txt;
+    al.classList.remove("hidden");
+	 
+	 
+	 setTimeout(check_, 50)
+};
+
+
+function check_ (){
+
+	var img = document.getElementById('img_');
+	var image_width  = img.naturalWidth;
+    var image_height = img.naturalHeight;
+	var al = document.getElementById('alert');
+	 
+	   if(image_width > 320 || image_height >132){ 
+	 
+    al.innerHTML += "<p style='color:red'>*Original width=" + image_width + ", " + "Original height=" + image_height+"</p>";
+	upload_bool = false;
+   
+	   }else{
+	al.innerHTML += "<p style='color:green'>Original width=" + image_width + ", " + "Original height=" + image_height+"</p>";
+	   }
+   
+   if(upload_bool){
+	  alert("success");
+	  document.getElementById("submit_").disabled = false;
+	}
+   
+   
+   
+};
+
+
+
+function f_hidden() {
+   
+	 document.getElementById("submit_").disabled = true;
+	 
+};
+
+
+
+</script>
